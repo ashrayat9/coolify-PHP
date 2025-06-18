@@ -26,15 +26,12 @@ jobs:
           node-version: '20'
 
       - name: Install node dependencies 🔎
-        working-directory: ./plugins/unified-communications
         run: npm ci
 
       - name: Install PHP dependencies 📦
-        working-directory: ./plugins/unified-communications
         run: composer install
 
       - name: Build project 🔧
-        working-directory: ./plugins/unified-communications
         run: npm run build
 
       - name: Remove things we don't want to sync
