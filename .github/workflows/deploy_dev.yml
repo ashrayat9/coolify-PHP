@@ -1,0 +1,73 @@
+name: Deploy Dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PSE
+        uses: invisirisk/pse-action@latest
+        with:
+          api_url: "https://app.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+      - name: Checkout code 📜
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2  # Specify the PHP version you need
+
+      - name: Set up Node.js ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install node dependencies 🔎
+        working-directory: ./plugins/unified-communications
+        run: npm ci
+
+      - name: Install PHP dependencies 📦
+        working-directory: ./plugins/unified-communications
+        run: composer install
+
+      - name: Build project 🔧
+        working-directory: ./plugins/unified-communications
+        run: npm run build
+
+      - name: Remove things we don't want to sync
+        run: |
+          rm -rf ./storage
+          rm -rf ./tests
+          rm -rf ./lang
+
+      - name: Rsync and Update Plugins, Themes, and General Error
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.WPE_SSHG_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.WPE_SSHG_HOST }} >> ~/.ssh/known_hosts
+          rsync -avz --delete-after ./themes/ ${{ secrets.SSH_LOGIN }}:~/sites/
+          rsync -avz --delete-after ./plugins/ ${{ secrets.SSH_LOGIN }}:~/sites/
+          rsync -avz --delete-after ./general-error.html ${{ secrets.SSH_LOGIN }}:~/sites/
+          rsync -avz --delete-after ./duplicate-email-error.html ${{ secrets.SSH_LOGIN }}:~/sites/
+          rsync -avz --delete-after ./php-error.php ${{ secrets.SSH_LOGIN }}:~/sites/
+      - name: Cleanup PSE
+        if: always()
+        uses: invisirisk/pse-action@latest
+        with:
+          cleanup: "true"
+      
+  gather_analytics:
+    runs-on: ubuntu-latest
+    name: Gather Analytics
+    needs: build
+    steps:
+      - name: Gather Status
+        uses: invisirisk/pse-action@test
+        with:
+          api_url: "https://app.stage.invisirisk.com"
+          app_token: ${{ secrets.IR_API_KEY }}
+          send_job_status: "true" 
