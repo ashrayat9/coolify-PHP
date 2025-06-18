@@ -43,33 +43,7 @@ jobs:
       - name: Rsync and Update Plugins, Themes, and General Error
         run: |
           mkdir -p ~/.ssh
-          echo "-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEAjBiUmZ2XKiqh7/LfR5xZs+L4cR08/xTJEwuzHjH4tg96BRdK
-803KyqYbcMfmXgSJ17QF/NEQ56tJWulTqHAaY2QDB4t/WnFcV0kCahea31MlGP3R
-QGYZLw5wZRBnFr/poASmv8YIJeGh8biYo5gugnLwwnxCHWNbYXeX287iSTQHmKDM
-a0Boqbm0ifHQ8BCH6Cq9KnY+qv7+cq1czrO/lTHMJ/8yrkasxWQW4l2MTTt3PvDZ
-AyJWgk8+8EioAlWKpD8zM40+5ofFjmlzTrnYSLg/F85Kao2Bgw+z3jnlOFz7JAOa
-KdeMu1ALZr3ZrN6cvC7OUl9kWArwlF+ti6pU0QIDAQABAoIBAEgPhLAXXV/1GeLA
-fJTrGUDsKHqWXX+fg2XmiLWpYpLTFyJzPrwzcXIXStoSGK6XiweGs+W87AMeGddH
-WR60uv4QvXYuDM3KrYLALRvBFIp2zAg01mNXoPCRbsKtUzlicZs7iUHvbNV/X7tk
-Bi9v4cx7rtd67s8LAj/6MgSAP+kCrd4z9+Ut82NBuxt4OfZ9V9yrJ1d/ItHLYI/T
-yDAqW1q+5azAJXxY/54ToWcsZ1orUS+5qjfTibdJBUlZlQTXsyIyo9/L87vj6TV1
-ufmKmCuNIQtgb/Ab2CxZJpKVPLhShYSElsdxJL+5CcMAGNzFk+rhPFwyBeX1qfbg
-dItDd1kCgYEA+fHrxzXtF1zTtEwjtRMo+akqu0MfNWXLh6oCS1tvoswy03WkHVDj
-WwtJGdiacINl42pEhK9Nhrm5gZHgDZqZutljbTx0I0L6wGgz3J7cjyWpMHnVYb+f
-JXOk7Dp/LRN6AB/vwT8wNGAH2L0tgW8L0uKQU6N4Od5IaR02bdu0d6MCgYEAj31p
-Qo+D4rws1jTCBfDOehsxfbbeyZf2Alc1X5RjRHbHh91uboBonsjb6kJbAOKtaLvB
-/QszzZ7bW98vKG2umRWtmaCGkvmgRUeCpL3k5bKUPUl/nqaO+XiWJp1OXupurzPv
-blMLQLeFymi5y3gVKAt9KWY9KWmeMvvQLGKTWPsCgYEA2flSx/6Nb+xybDBii43U
-FDaln34f/29xGjT3n0R0jSNLyAI2R6K9RC8JZ1LxDOJqvvN0IcrH75CU6RyQqwyC
-uOLQxPkNx5qoF5hIckTQ0L3lWPNHVeHJJt49nA4/zs3HfchcTMmQfnypGymQP+ra
-AuW3PFm5ha4GtDTXvOL39cUCgYAKWOrcR+kk0pkRIWDUeNcK6ycYf7V1KCYvaQaK
-S/MUntQosgkiotPoj2d8byiM2cvTf6avjr0/mLMM3v1Rlwc+Ntf7+h16P9IU7OE4
-7BCzl7sk6EXxtOUejFmXk0Rxh8pPjBk6BXcMRa+6Nu8fAxvTdXCjKaJDeEBWQN50
-NO+XPQKBgCsd1AUMZYHy3e/9KJRKhIk8eoLq2Gm4Qv7iH22WND6tjX9z9byd1ZA/
-nKLMafEvk3bENpPzW79szcIE7SmBEwRRx586TN658C3V7AXKrimFK2zxUU21mt+0
-rTyMSR0O13s9lc5ktWPIOfbF5i6rPSY2Z2vS441gFycBZ0eULZBy
------END RSA PRIVATE KEY-----" > ~/.ssh/id_rsa
+          echo "${{ secrets.WPE_SSHG_KEY_PRIVATE }}" > ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           echo "------------------------------------------known hosts------------------------------------------"
