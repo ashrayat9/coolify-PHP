@@ -45,7 +45,9 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.WPE_SSHG_KEY_PRIVATE }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          echo "------------------------------------------known hosts------------------------------------------"
           ssh-keyscan ${{ secrets.WPE_SSHG_HOST }} >> ~/.ssh/known_hosts
+          echo "------------------------------------------Rsync------------------------------------------"
           rsync -avz --delete-after ./themes/ ${{ secrets.SSH_LOGIN }}:~/sites/
           rsync -avz --delete-after ./plugins/ ${{ secrets.SSH_LOGIN }}:~/sites/
           rsync -avz --delete-after ./general-error.html ${{ secrets.SSH_LOGIN }}:~/sites/
